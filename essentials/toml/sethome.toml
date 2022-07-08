@@ -1,0 +1,52 @@
+commandMode = "COMMAND_CUSTOM"
+
+[customCommand]
+parent = "sethome"
+
+[[customCommand.children]]
+child = "name"
+type = "argument"
+argumentType = "minecraft:word"
+
+[customCommand.children.suggestionProvider]
+suggestionMode = "DATABASE_STARTS_WITH"
+suggestion = "$executor_name().home.suggestions"
+
+[[customCommand.children.actions]]
+command = "commandaliases database put $executor_name().home.suggestions.{{name}} {{name}}"
+commandType = "SERVER"
+requireSuccess = true
+
+[[customCommand.children.actions]]
+command = "commandaliases database put $executor_name().home.{{name}}.dimension $get_dimension($executor_name())"
+commandType = "SERVER"
+requireSuccess = true
+
+[[customCommand.children.actions]]
+command = "commandaliases database put $executor_name().home.{{name}}.x $get_block_pos_x($executor_name())"
+commandType = "SERVER"
+requireSuccess = true
+
+[[customCommand.children.actions]]
+command = "commandaliases database put $executor_name().home.{{name}}.y $get_block_pos_y($executor_name())"
+commandType = "SERVER"
+requireSuccess = true
+
+[[customCommand.children.actions]]
+command = "commandaliases database put $executor_name().home.{{name}}.z $get_block_pos_z($executor_name())"
+commandType = "SERVER"
+requireSuccess = true
+
+[[customCommand.children.actions]]
+command = "commandaliases database put $executor_name().home.{{name}}.yaw $get_yaw($executor_name())"
+commandType = "SERVER"
+requireSuccess = true
+
+[[customCommand.children.actions]]
+command = "commandaliases database put $executor_name().home.{{name}}.pitch $get_pitch($executor_name())"
+commandType = "SERVER"
+successfulMessage = "$executor_name() [{{name}}] home has been set in [$get_dimension($executor_name())] with coordinates of $get_block_pos_x($executor_name()) $get_block_pos_y($executor_name()) $get_block_pos_z($executor_name())"
+
+[[customCommand.actions]]
+command = "sethome main"
+commandType = "CLIENT"

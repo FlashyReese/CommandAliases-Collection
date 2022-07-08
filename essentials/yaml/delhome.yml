@@ -1,0 +1,45 @@
+commandMode: COMMAND_CUSTOM
+customCommand:
+  parent: delhome
+  children:
+    - child: name
+      type: argument
+      argumentType: 'minecraft:word'
+      suggestionProvider:
+        suggestionMode: DATABASE_STARTS_WITH
+        suggestion: $executor_name().home.suggestions
+      actions:
+        - command: >-
+            commandaliases database contains
+            $executor_name().home.suggestions.{{name}}
+          commandType: SERVER
+          unsuccessfulMessage: '$executor_name() [{{name}}] home does not exist!'
+          requireSuccess: true
+        - command: >-
+            commandaliases database delete
+            $executor_name().home.suggestions.{{name}}
+          commandType: SERVER
+          requireSuccess: true
+        - command: >-
+            commandaliases database delete
+            $executor_name().home.{{name}}.dimension
+          commandType: SERVER
+          requireSuccess: true
+        - command: 'commandaliases database delete $executor_name().home.{{name}}.x'
+          commandType: SERVER
+          requireSuccess: true
+        - command: 'commandaliases database delete $executor_name().home.{{name}}.y'
+          commandType: SERVER
+          requireSuccess: true
+        - command: 'commandaliases database delete $executor_name().home.{{name}}.z'
+          commandType: SERVER
+          requireSuccess: true
+        - command: 'commandaliases database delete $executor_name().home.{{name}}.yaw'
+          commandType: SERVER
+          requireSuccess: true
+        - command: 'commandaliases database delete $executor_name().home.{{name}}.pitch'
+          commandType: SERVER
+          successfulMessage: '$executor_name() [{{name}}] home has been deleted!'
+  actions:
+    - command: delhome main
+      commandType: CLIENT

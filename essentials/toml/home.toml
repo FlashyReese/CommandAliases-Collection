@@ -1,0 +1,28 @@
+commandMode = "COMMAND_CUSTOM"
+
+[customCommand]
+parent = "home"
+
+[[customCommand.children]]
+child = "name"
+type = "argument"
+argumentType = "minecraft:word"
+
+[customCommand.children.suggestionProvider]
+suggestionMode = "DATABASE_STARTS_WITH"
+suggestion = "$executor_name().home.suggestions"
+
+[[customCommand.children.actions]]
+command = "commandaliases database contains $executor_name().home.suggestions.{{name}}"
+commandType = "SERVER"
+unsuccessfulMessage = "$executor_name() [{{name}}] home has not been set!"
+requireSuccess = true
+
+[[customCommand.children.actions]]
+command = "execute in $get_database_value($executor_name().home.{{name}}.dimension) run tp $executor_name() $get_database_value($executor_name().home.{{name}}.x) $get_database_value($executor_name().home.{{name}}.y) $get_database_value($executor_name().home.{{name}}.z) $get_database_value($executor_name().home.{{name}}.yaw) $get_database_value($executor_name().home.{{name}}.pitch)"
+commandType = "SERVER"
+successfulMessage = "Teleporting to $executor_name() [{{name}}] home!"
+
+[[customCommand.actions]]
+command = "home main"
+commandType = "CLIENT"

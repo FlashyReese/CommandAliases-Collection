@@ -1,0 +1,40 @@
+commandMode: COMMAND_CUSTOM
+customCommand:
+  parent: tpa
+  children:
+    - child: player
+      type: argument
+      argumentType: 'minecraft:player'
+      actions:
+        - command: 'commandaliases compute equals {{player}} $executor_name()'
+          commandType: SERVER
+          successfulMessage: You can not request to teleport to yourself!
+          unsuccessfulActions:
+            - command: 'commandaliases database contains {{player}}.tpa.last_player'
+              commandType: SERVER
+              requireSuccess: true
+              successfulMessage: '{{name}} has a pending request! Please wait...'
+              unsuccessfulActions:
+                - command: >-
+                    commandaliases database put {{player}}.tpa.last_player
+                    $executor_name()
+                  commandType: SERVER
+                  requireSuccess: true
+                - command: >-
+                    tellraw {{player}} "$executor_name() has requested to
+                    teleport to you. Type /tpaccept to accept this request. This
+                    request will expire in 60 seconds."
+                  commandType: SERVER
+                  requireSuccess: true
+                  successfulMessage: 'You have requested to teleport to {{player}}.'
+                - sleep: '60000'
+                - id: '{{player}}.tpa.event.$executor_name()'
+                  command: 'commandaliases database contains {{player}}.tpa.last_player'
+                  commandType: SERVER
+                  requireSuccess: true
+                - command: 'commandaliases database delete {{player}}.tpa.last_player'
+                  commandType: SERVER
+                  requireSuccess: true
+                - command: 'tellraw {{player}} "The request has expired."'
+                  commandType: SERVER
+                  successfulMessage: 'The request to {{player}} has expired.'
