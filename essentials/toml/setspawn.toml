@@ -1,0 +1,45 @@
+schemaVersion = 1
+commandMode = "COMMAND_CUSTOM"
+command = "setspawn"
+
+[[children]]
+child = "dimension"
+type = "argument"
+argumentType = "minecraft:dimension"
+
+[[children.children]]
+child = "pos"
+type = "argument"
+argumentType = "minecraft:vec3"
+
+[[children.children.children]]
+child = "rotation"
+type = "argument"
+argumentType = "minecraft:rotation"
+
+[[children.children.children.actions]]
+command = "commandaliases database put spawn.dimension {{dimension}}"
+commandType = "SERVER"
+requireSuccess = true
+
+[[children.children.children.actions]]
+command = "commandaliases database put spawn.pos {{pos}}"
+commandType = "SERVER"
+requireSuccess = true
+
+[[children.children.children.actions]]
+command = "commandaliases database put spawn.rotation {{rotation}}"
+commandType = "SERVER"
+messageIfSuccessful = "Spawn has been set in [{{dimension}}] with coordinates of {{pos}} and rotation of {{rotation}}"
+
+[[children.children.actions]]
+command = "setspawn {{dimension}} {{pos}} $get_yaw($executor_name()) $get_pitch($executor_name())"
+commandType = "CLIENT"
+
+[[children.actions]]
+command = "setspawn {{dimension}} $get_pos_x($executor_name()) $get_pos_y($executor_name()) $get_pos_z($executor_name()) $get_yaw($executor_name()) $get_pitch($executor_name())"
+commandType = "CLIENT"
+
+[[actions]]
+command = "setspawn $get_dimension($executor_name()) $get_block_pos_x($executor_name()) $get_block_pos_y($executor_name()) $get_block_pos_z($executor_name()) $get_yaw($executor_name()) $get_pitch($executor_name())"
+commandType = "CLIENT"

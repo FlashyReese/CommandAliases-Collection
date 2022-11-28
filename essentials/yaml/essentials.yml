@@ -1,0 +1,52 @@
+schemaVersion: 1
+commandMode: COMMAND_CUSTOM
+command: essentials
+children:
+- child: setMaximumHome
+  type: literal
+  children:
+  - child: state
+    type: argument
+    argumentType: brigadier:bool
+    actions:
+    - command: commandaliases database put essentials.max_home {{state}}
+      commandType: SERVER
+      requireSuccess: true
+    - command: commandaliases compute equals true {{state}}
+      commandType: SERVER
+      messageIfSuccessful: Enabled maximum homes!
+      messageIfUnsuccessful: Disabled maximum homes!
+- child: setMaximumHomeAmount
+  type: literal
+  children:
+  - child: amount
+    type: argument
+    argumentType: brigadier:integer
+    actions:
+    - command: commandaliases database put essentials.max_home_amount {{amount}}
+      commandType: SERVER
+      messageIfSuccessful: Maximum amount of homes set to {{amount}}!
+- child: setTeleportRequestTimeoutSeconds
+  type: literal
+  children:
+  - child: seconds
+    type: argument
+    argumentType: brigadier:integer
+    actions:
+    - command: commandaliases compute multiplication essentials.tpa_timeout_seconds {{seconds}} 1000
+      commandType: SERVER
+      messageIfSuccessful: Teleportion request timeout set to {{seconds}}s!
+- child: setTeleportRequestTimeout
+  type: literal
+  children:
+  - child: state
+    type: argument
+    argumentType: brigadier:bool
+    actions:
+    - command: commandaliases database put essentials.tpa_timeout {{state}}
+      commandType: SERVER
+      requireSuccess: true
+    - command: commandaliases compare equals "true" "{{state}}"
+      commandType: SERVER
+      messageIfSuccessful: Enabled teleportion request timeout!
+      messageIfUnsuccessful: Disabled teleportion request timeout!
